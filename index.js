@@ -57,7 +57,7 @@ module.exports = class RejoinVC extends Plugin {
             })
             setTimeout(() => {
                 uninject('rejoin-vc')
-            }, 5000)
+            }, 10000)
         }
     }
 }
