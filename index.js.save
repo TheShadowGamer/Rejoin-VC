@@ -1,0 +1,38 @@
+const { Plugin } = require('powercord/entities')
+const { getModule, FluxDispatcher, React } = require("powercord/webpack")
+const { selectVoiceChannel } = getModule(["selectVoiceChannel"], false)
+const { inject, uninject } = require('powercord/injector')
+const rejoinButton = require("./components/rejoin-button")
+
+module.exports = class DisconnectVoice extends Plugin {
+    async startPlugin () {
+        FluxDispatcher.subscribe("VOICE_CHANNEL_SELECT", async (voice) => {
+            if(voice.channelId === null) {
+                this.injectTheButton()
+            }
+        })
+    }
+    pluginWillUnload () {
+        uninject("rejoinn-vc")
+        FluxDispatcher.unsubscribe("VOICE_CHANNEL_SELECT", async (voice) => {
+            if(voice.channelId === null) {
+                this.injectTheButton()
+            }
+        })
+    }
+    async injectTheButton() {
+        const Menu = await getModule(m => m.default && m.default.displayName == 'Menu')
+        inject('rejoinn-vc', Menu, 'default', args => {
+            React.createElement(Menu.MenuItem, {
+                id: "rejoinn-vc",
+                action: () => {
+                    selectVoiceChannel(voice.currentVoiceChannelId)
+                },
+                render: rejoinButton
+            })
+        }, true) 
+        setTimeout(() => {
+            uninject('rejoinn-vc')
+        }, 5000)
+    }
+}

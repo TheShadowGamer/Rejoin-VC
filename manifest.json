@@ -1,0 +1,7 @@
+{
+    "name": "Rejoin VC",
+    "version": "0.x.x",
+    "author": "TheShadowGamer#7931",
+    "license": "MIT",
+    "description": "This powercord plugin allows you to rejoin a voice channel by a button within 10 seconds of leaving."
+}
