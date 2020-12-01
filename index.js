@@ -55,8 +55,10 @@ module.exports = class RejoinVC extends Plugin {
                 }))
                 return res
             })
+            Account.forceUpdate()
             setTimeout(() => {
                 uninject('rejoin-vc')
+                Account.forceUpdate()
             }, 10000)
         }
     }
